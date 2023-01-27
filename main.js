@@ -11,17 +11,54 @@ const createSvg = (datasetObject) => {
     console.log(datasetObject)
     console.log(datasetArray)
 
-    let w = 0.8 * window.innerWidth
-    let h = 0.7 * window.innerHeight
+    let width = 0.9 * window.innerWidth
+    let height = 0.8 * window.innerHeight
+    let padding = 40
 
+    console.log(width)
+    console.log(height)
+
+    const minX = new Date(d3.min(datasetArray, (d) => d[0]))
+    const maxX = new Date(d3.max(datasetArray, (d) => d[0]))
+    const minY = d3.min(datasetArray, (d) => d[1])
+    const maxY = d3.max(datasetArray, (d) => d[1])
+    
+    const xScale = d3.scaleTime()
+    .domain([minX,maxX])
+    .range([padding,width - padding])
+    
+    const yScale = d3.scaleLinear()
+    .domain([0,maxY])
+    .range([height - padding, padding])
+    
     const svg = d3.select("div")
     .append("svg")
-    .attr("width",w)
-    .attr("height",h);
-
-
+    .attr("width",width)
+    .attr("height",height);
 
     svg.selectAll("rect")
+    .data(datasetArray)
+    .enter()
+    .append("rect")
+    .attr("class","bar")
+    .attr("fill","green")
+    .attr("x",(d)=>xScale(new Date(d[0])))
+    .attr("y",(d)=>yScale(d[1]))
+    .attr("width","5")
+    .attr("height",(d) => height-padding-yScale(d[1]))
+
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisRight(yScale);
+
+    svg.append("g")
+    .attr("transform",`translate(0,${height-padding})`)
+    .call(xAxis)
+    .attr("id","x-axis")
+
+    svg.append("g")
+    .attr("transform",`translate(${padding},0)`)
+    .call(yAxis)
+    .attr("id","y-axis")
 }
 
 
