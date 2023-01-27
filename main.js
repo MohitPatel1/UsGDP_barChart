@@ -8,8 +8,7 @@ getDataset()
 
 const createSvg = (datasetObject) => {
     const datasetArray = datasetObject.data
-    console.log(datasetObject)
-    console.log(datasetArray)
+    const tooltip = document.getElementById("tooltip")
 
     let width = 0.9 * window.innerWidth
     let height = 0.8 * window.innerHeight
@@ -46,6 +45,20 @@ const createSvg = (datasetObject) => {
     .attr("y",(d)=>yScale(d[1]))
     .attr("width","5")
     .attr("height",(d) => height-padding-yScale(d[1]))
+    .attr("data-date",(d)=>d[0])
+    .attr("data-gdp",(d)=>d[1])
+
+    .on("mouseover",(i,d)=>{
+        tooltip.classList.add("show");
+        tooltip.style.left=i*3+padding*2+"px";
+        tooltip.setAttribute('data-date',d[0]);
+        tooltip.innerHTML = `${d[0]}<br>${d[1]}<br>billion`;
+    })
+
+    .on("mouseout",()=>{
+        tooltip.classList.remove("show")
+        // alert("come back baby")
+    })
 
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisRight(yScale);

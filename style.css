@@ -1,0 +1,34 @@
+body{
+    height: 100vh;
+}
+
+h1{
+    text-align: center;
+    color:blueviolet;
+}
+
+#tooltip{
+    width: 150px;
+    height: 60px;
+    position:absolute;
+    top: 350px;
+    left: 250px;
+    display: none;
+  }
+  
+  #tooltip.show{
+    display: flex;
+  }
+
+svg{
+  background: rgba(251, 255, 29, 0.724);  
+}
+
+rect{
+    fill: green;
+  
+  }
+
+rect:hover{
+    fill: white;
+  }
